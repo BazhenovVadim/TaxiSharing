@@ -4,4 +4,4 @@ class HistoryOut(HistoryIn):
     id_history_trip : int
 
     class Config:
-        orm_mode = True
+        from_attributes : True
