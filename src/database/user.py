@@ -1,4 +1,4 @@
-from base_meta import BaseSQLAlchemyModel
+from .base_meta import BaseSQLAlchemyModel
 from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
 
