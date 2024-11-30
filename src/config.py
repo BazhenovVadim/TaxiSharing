@@ -1,15 +1,15 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+import os
+from dotenv import load_dotenv
 
+#if not os.getenv("DOCKER"):
+#    load_dotenv(".env")
 
-class Settings(BaseSettings):
-    DATABASE_USER: str
-    DATABASE_PASSWORD: str
-    DATABASE_HOST: str
-    DATABASE_PORT: int
-    DATABASE_NAME: str
-    SECRET_JWT_KEY: str
-    TOKEN_EXP_IN_MINUTES: int
-
-    model_config = SettingsConfigDict(env_file=".env")
-
-settings = Settings()
+load_dotenv()
+phone = os.getenv("phone")
+DATABASE_USER = os.getenv("DATABASE_USER")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+DATABASE_HOST = os.getenv("DATABASE_HOST")
+DATABASE_PORT = os.getenv("DATABASE_PORT")
+DATABASE_NAME = os.getenv("DATABASE_NAME")
+TOKEN_EXP_IN_MINUTES = int(os.getenv("TOKEN_EXP_IN_MINUTES"))
+SECRET_JWT_KEY = os.getenv("SECRET_JWT_KEY")
