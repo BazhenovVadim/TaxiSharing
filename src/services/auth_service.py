@@ -8,8 +8,8 @@ from passlib.context import CryptContext
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.config import Settings
-from database import User, get_session
+from src.config import TOKEN_EXP_IN_MINUTES, SECRET_JWT_KEY
+from src.database import User, get_session
 from starlette import status
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -44,11 +44,11 @@ class AuthService:
     def create_jwt_token(payload: dict,
                          expire_delta: int | None = None) -> str:
         if not expire_delta:
-            expire_delta = Settings.TOKEN_EXP_IN_MINUTES
+            expire_delta = TOKEN_EXP_IN_MINUTES
         expire = datetime.now(timezone.utc) + timedelta(expire_delta)
         payload = payload.copy()
         payload["exp"] = expire
-        jwt_token = jwt.encode(payload, Settings.SECRET_JWT_KEY, "HS256")
+        jwt_token = jwt.encode(payload, SECRET_JWT_KEY, "HS256")
         return jwt_token
 
     @staticmethod
@@ -66,7 +66,7 @@ class AuthService:
             headers={"WWW-Authenticate": "Bearer"},
         )
         try:
-            payload = jwt.decode(token, Settings.SECRET_JWT_KEY, algorithms=["HS256"])
+            payload = jwt.decode(token, SECRET_JWT_KEY, algorithms=["HS256"])
             user_id: str = payload.get("user_id")
             if user_id is None:
                 raise credentials_exception
